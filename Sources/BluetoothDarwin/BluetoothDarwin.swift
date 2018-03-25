@@ -6,13 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-#if os(macOS)
-import IOBluetooth
-#elseif os(iOS) || os(tvOS)
-import ExternalAccessory
-#endif
-
 import Foundation
+import IOBluetooth
 import CBluetoothDarwin
 import Bluetooth
 
@@ -24,18 +19,18 @@ public struct BluetoothHCICommandRequest: RawRepresentable {
         self.rawValue = rawValue
     }
 }
-/*
+
 /// IOBluetoothHostController::SendRawHCICommand(unsigned int, char*, unsigned int, unsigned char*, unsigned int)
 public func BluetoothHCISendRawCommand(request: BluetoothHCICommandRequest,
                                        commandData: Data,
-                                       returnParameter: inout Data) -> CInt {
+                                       returnParameter outputData: inout Data) -> CInt {
     
     assert(commandData.isEmpty == false)
     
     var request = request.rawValue
     var commandData = commandData
     var commandSize = commandData.count
-    var returnParameterSize = returnParameter.count
+    var returnParameter = outputData
     
     var dispatchParameters = IOBluetoothHCIDispatchParams()
     
@@ -48,14 +43,7 @@ public func BluetoothHCISendRawCommand(request: BluetoothHCICommandRequest,
     dispatchParameters.sizes.2 = UInt64(MemoryLayout<uintptr_t>.size) // sizeof(uintptr_t);
     dispatchParameters.index = 0x000060c000000062 // Method ID
     
-    withUnsafeMutablePointer(to: &dispatchParameters) { (dispatchParametersPointer) in
-        
-        returnParameter.withUnsafeMutableBytes { (returnParameterPointer) in
-            
-            returnParameterS
-        }
+    return returnParameter.withUnsafeMutableBytes {
+        BluetoothHCIDispatchUserClientRoutine(&dispatchParameters, $0, returnParameter.count)
     }
-    
-    return BluetoothHCIDispatchUserClientRoutine(&dispatchParameters, returnParameter, &returnParameterSize)
 }
-*/

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "52D6D97B1BEFF229002C0205"
+               BlueprintIdentifier = "52D6DA0E1BF000BD002C0205"
                BuildableName = "BluetoothDarwin.framework"
-               BlueprintName = "BluetoothDarwin-iOS"
+               BlueprintName = "BluetoothDarwin"
                ReferencedContainer = "container:BluetoothDarwin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,9 +34,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "52D6D9851BEFF229002C0205"
-               BuildableName = "BluetoothDarwin-iOS Tests.xctest"
-               BlueprintName = "BluetoothDarwin-iOS Tests"
+               BlueprintIdentifier = "DD7502791C68FCFC006590AF"
+               BuildableName = "BluetoothDarwin Tests.xctest"
+               BlueprintName = "BluetoothDarwin Tests"
                ReferencedContainer = "container:BluetoothDarwin.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -44,9 +44,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "52D6D97B1BEFF229002C0205"
+            BlueprintIdentifier = "52D6DA0E1BF000BD002C0205"
             BuildableName = "BluetoothDarwin.framework"
-            BlueprintName = "BluetoothDarwin-iOS"
+            BlueprintName = "BluetoothDarwin"
             ReferencedContainer = "container:BluetoothDarwin.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -67,9 +67,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "52D6D97B1BEFF229002C0205"
+            BlueprintIdentifier = "52D6DA0E1BF000BD002C0205"
             BuildableName = "BluetoothDarwin.framework"
-            BlueprintName = "BluetoothDarwin-iOS"
+            BlueprintName = "BluetoothDarwin"
             ReferencedContainer = "container:BluetoothDarwin.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -85,9 +85,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "52D6D97B1BEFF229002C0205"
+            BlueprintIdentifier = "52D6DA0E1BF000BD002C0205"
             BuildableName = "BluetoothDarwin.framework"
-            BlueprintName = "BluetoothDarwin-iOS"
+            BlueprintName = "BluetoothDarwin"
             ReferencedContainer = "container:BluetoothDarwin.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
