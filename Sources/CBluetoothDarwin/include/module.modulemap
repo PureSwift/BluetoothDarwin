@@ -1,0 +1,4 @@
+module CBluetoothDarwin [system] {
+    header "IOBluetoothHostController.h"
+    export *
+}
