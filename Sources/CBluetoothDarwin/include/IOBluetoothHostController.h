@@ -5,37 +5,7 @@
 //
 
 @import Foundation;
-@class NSTimer;
-
-#ifdef __APPLE__
-#include "TargetConditionals.h"
-@import Foundation;
-#ifdef TARGET_OS_IPHONE
-@import ExternalAccessory;
-#elif TARGET_IPHONE_SIMULATOR
-@import ExternalAccessory;
-#elif TARGET_OS_MAC
 @import IOBluetooth;
-#else
-// Unsupported platform
-#endif
-#endif
-
-#ifdef TARGET_OS_IPHONE
-@interface IOBluetoothHostController: NSObject
-{
-    unsigned long long _eventCodeMask;
-    unsigned int _cachedClassOfDevice;
-    id _delegate;
-    NSTimer *_timerClassOfDeviceSetting;
-    void *_eventListener;
-    id _mReserved;
-    id _mUnused000;
-    id _mUnused001;
-    id _mUnused002;
-}
-@end
-#endif
 
 @interface IOBluetoothHostController (PrivateAPI)
 

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6E0245B1206806A6007FB15E /* BluetoothDarwin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0245AF2068069F007FB15E /* BluetoothDarwin.swift */; };
+		6E0245D42068320A007FB15E /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 6E0245D32068320A007FB15E /* Cartfile */; };
+		6E0245D6206837DC007FB15E /* HostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0245D5206837DC007FB15E /* HostController.swift */; };
 		8933C78F1EB5B82C000D00A4 /* BluetoothDarwinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7891EB5B82A000D00A4 /* BluetoothDarwinTests.swift */; };
 		DD7502881C68FEDE006590AF /* BluetoothDarwin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D6DA0F1BF000BD002C0205 /* BluetoothDarwin.framework */; };
 /* End PBXBuildFile section */
@@ -28,6 +30,9 @@
 		6E0245AC2068069F007FB15E /* IOBluetoothHostController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOBluetoothHostController.h; sourceTree = "<group>"; };
 		6E0245AD2068069F007FB15E /* dummy.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dummy.c; sourceTree = "<group>"; };
 		6E0245AF2068069F007FB15E /* BluetoothDarwin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDarwin.swift; sourceTree = "<group>"; };
+		6E0245D220683201007FB15E /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		6E0245D32068320A007FB15E /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		6E0245D5206837DC007FB15E /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
 		8933C7891EB5B82A000D00A4 /* BluetoothDarwinTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothDarwinTests.swift; sourceTree = "<group>"; };
 		AD2FAA261CD0B6D800659CF4 /* BluetoothDarwin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BluetoothDarwin.plist; sourceTree = "<group>"; };
 		AD2FAA281CD0B6E100659CF4 /* BluetoothDarwinTests.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BluetoothDarwinTests.plist; sourceTree = "<group>"; };
@@ -56,6 +61,8 @@
 		52D6D9721BEFF229002C0205 = {
 			isa = PBXGroup;
 			children = (
+				6E0245D220683201007FB15E /* Package.swift */,
+				6E0245D32068320A007FB15E /* Cartfile */,
 				6E0245A82068069F007FB15E /* Sources */,
 				8933C7831EB5B7EB000D00A4 /* Tests */,
 				52D6D99C1BEFF38C002C0205 /* Configs */,
@@ -112,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				6E0245AF2068069F007FB15E /* BluetoothDarwin.swift */,
+				6E0245D5206837DC007FB15E /* HostController.swift */,
 			);
 			path = BluetoothDarwin;
 			sourceTree = "<group>";
@@ -234,6 +242,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E0245D42068320A007FB15E /* Cartfile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E0245B1206806A6007FB15E /* BluetoothDarwin.swift in Sources */,
+				6E0245D6206837DC007FB15E /* HostController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
