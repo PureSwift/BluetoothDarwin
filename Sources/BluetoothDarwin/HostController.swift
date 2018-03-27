@@ -23,8 +23,7 @@ public final class HostController: BluetoothHostControllerInterface {
     
     private init(_ controller: IOBluetoothHostController) {
         
-        guard let addressString = controller.addressAsString().uppercased()
-            else { fatalError("Could not get Bluetooth address of controller") }
+         let addressString = controller.addressAsString().uppercased()
         
         guard let address = Address(rawValue: addressString)
             else { fatalError("Invalid Bluetooth Address \(addressString)") }
@@ -48,40 +47,71 @@ public final class HostController: BluetoothHostControllerInterface {
     
     // MARK: - Methods
     
-    public func deviceCommand<T>(_ command: T) throws
-        where T : HCICommand {
-            
-            
-    }
+    public func deviceCommand<T>(_ command: T) throws where T : HCICommand {
     
-    public func deviceCommand<T>(_ commandParameter: T) throws
-        where T : HCICommandParameter {
-            
-            
-    }
-    
-    public func deviceRequest<C>(_ command: C, timeout: Int = HCI.defaultTimeout) throws
-        where C : HCICommand {
-            
+        let commandParameterData = Data()
+        var returnParameterData = Data()
         
+        try HCISendRequest(command: command,
+                           commandParameterData: commandParameterData,
+                           returnParameterData: &returnParameterData,
+                           timeout: 0)
     }
     
-    public func deviceRequest<CP>(_ commandParameter: CP, timeout: Int = HCI.defaultTimeout) throws
-        where CP : HCICommandParameter {
+    public func deviceCommand<T: HCICommandParameter>(_ commandParameter: T) throws {
+        
+        let (_, headerData) = HCICommandHeader.from(commandParameter)
+        let commandParameterData = Data(headerData + commandParameter.byteValue)
+        var returnParameterData = Data()
+        
+        try HCISendRequest(command: T.command,
+                           commandParameterData: commandParameterData,
+                           returnParameterData: &returnParameterData,
+                           timeout: 0)
+    }
+    
+    public func deviceRequest<C: HCICommand>(_ command: C, timeout: Int = HCI.defaultTimeout) throws {
+        
+        let commandParameterData = Data()
+        var returnParameterData = Data()
             
+        try HCISendRequest(command: command,
+                           commandParameterData: commandParameterData,
+                           returnParameterData: &returnParameterData,
+                           timeout: timeout)
+    }
+    
+    public func deviceRequest<CP>(_ commandParameter: CP, timeout: Int = HCI.defaultTimeout) throws where CP : HCICommandParameter {
             
+        let commandParameterData = Data(commandParameter.byteValue)
+        var returnParameterData = Data()
+        
+        try HCISendRequest(command: CP.command,
+                           commandParameterData: commandParameterData,
+                           returnParameterData: &returnParameterData,
+                           timeout: timeout)
     }
     
     public func deviceRequest<CP, EP>(commandParameter: CP, eventParameterType: EP.Type, timeout: Int = HCI.defaultTimeout) throws -> EP
         where CP : HCICommandParameter, EP : HCIEventParameter {
             
-            
+            fatalError("not implemented")
     }
     
-    public func deviceRequest<Return>(_ commandReturnType: Return.Type, timeout: Int = HCI.defaultTimeout) throws -> Return
-        where Return : HCICommandReturnParameter {
-            
+    public func deviceRequest <Return: HCICommandReturnParameter> (_ commandReturnType: Return.Type, timeout: Int = HCI.defaultTimeout) throws -> Return {
         
+        let commandParameterData = Data()
+        var returnParameterData = Data(count: commandReturnType.length)
+        
+        try HCISendRequest(command: Return.command,
+                           commandParameterData: commandParameterData,
+                           returnParameterData: &returnParameterData,
+                           timeout: timeout)
+        
+        guard let response = Return.init(byteValue: [UInt8](returnParameterData))
+            else { throw BluetoothHostControllerError.garbageResponse(returnParameterData) }
+        
+        return response
     }
 }
 

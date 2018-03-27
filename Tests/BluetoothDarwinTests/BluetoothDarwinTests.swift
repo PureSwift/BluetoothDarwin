@@ -8,17 +8,30 @@
 
 import Foundation
 import XCTest
+import IOBluetooth
+import Bluetooth
 import BluetoothDarwin
 
 final class BluetoothDarwinTests: XCTestCase {
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        //// XCTAssertEqual(BluetoothDarwin().text, "Hello, World!")
-    }
-    
     static var allTests = [
         ("testExample", testExample),
-    ]
+        ]
+    
+    func testExample() {
+        
+        guard let controller = HostController.default
+            else { XCTFail("No Bluetooth hardware avalible"); return }
+        
+        do {
+            
+            let localName = try controller.readLocalName()
+            
+            print("Local name: \(localName)")
+        }
+        
+        catch { XCTFail("Error: \(error)") }
+    }
+    
+    
 }

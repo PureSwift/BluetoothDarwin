@@ -11,20 +11,14 @@ import IOBluetooth
 import CBluetoothDarwin
 import Bluetooth
 
-internal struct BluetoothHCICommandRequest: RawRepresentable {
-    
-    public let rawValue: UInt32
-    
-    public init(rawValue: UInt32) {
-        self.rawValue = rawValue
-    }
-}
-
 /// Returns event parameter data.
 internal func HCISendRequest <Command: HCICommand> (command: Command,
                                                     commandParameterData: Data,
                                                     returnParameterData: inout Data,
-                                                    timeout: Int) throws -> [UInt8] {
+                                                    timeout: Int) throws {
+    
+    let commandHeader = HCICommandHeader(command: command, parameterLength: UInt8(commandParameterData.count))
+    let commandRawData = Data(commandHeader.byteValue) + commandParameterData
     
     var request: BluetoothHCIRequestID = 0
     var error: CInt = 0
@@ -36,18 +30,25 @@ internal func HCISendRequest <Command: HCICommand> (command: Command,
     
     assert(request != 0)
     
-    error = BluetoothHCISendRawCommand(request: , commandData: commandParameterData, returnParameter: &returnParameterData)
+    error = BluetoothHCISendRawCommand(request: request, commandData: commandRawData, returnParameter: &returnParameterData)
     
     guard error == 0
         else { throw HostController.DarwinError(errorCode: error) }
+    
+    if timeout > 0 {
+        
+        usleep(useconds_t(timeout))
+    }
+    
+    BluetoothHCIRequestDelete(request)
 }
 
 /// IOBluetoothHostController::SendRawHCICommand(unsigned int, char*, unsigned int, unsigned char*, unsigned int)
-internal func BluetoothHCISendRawCommand(request: BluetoothHCICommandRequest,
+internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
                                        commandData: Data,
                                        returnParameter outputData: inout Data) -> CInt {
     
-    var request = request.rawValue
+    var request = request
     var commandData = commandData
     var commandSize = commandData.count
     var returnParameter = outputData
