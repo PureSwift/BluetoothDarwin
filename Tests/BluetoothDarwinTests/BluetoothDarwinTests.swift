@@ -15,13 +15,13 @@ import BluetoothDarwin
 final class BluetoothDarwinTests: XCTestCase {
     
     static var allTests = [
-        ("testExample", testExample),
+        ("testReadName", testReadName),
         ]
     
-    func testExample() {
+    func testReadName() {
         
         guard let controller = HostController.default
-            else { XCTFail("No Bluetooth hardware avalible"); return }
+            else { XCTFail("No Bluetooth hardware availible"); return }
         
         do {
             
@@ -34,6 +34,4 @@ final class BluetoothDarwinTests: XCTestCase {
         
         catch { XCTFail("Error: \(error)") }
     }
-    
-    
 }
