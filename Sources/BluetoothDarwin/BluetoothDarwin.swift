@@ -51,7 +51,6 @@ internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
     var request = request
     var commandData = commandData
     var commandSize = commandData.count
-    var returnParameter = outputData
     
     var dispatchParameters = IOBluetoothHCIDispatchParams()
     
@@ -70,7 +69,5 @@ internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
     dispatchParameters.sizes.2 = UInt64(MemoryLayout<uintptr_t>.size) // sizeof(uintptr_t);
     dispatchParameters.index = 0x000060c000000062 // Method ID
     
-    return returnParameter.withUnsafeMutableBytes {
-        BluetoothHCIDispatchUserClientRoutine(&dispatchParameters, $0, returnParameter.count)
-    }
+    return BluetoothHCIDispatchUserClientRoutine(&dispatchParameters, nil, 0)
 }

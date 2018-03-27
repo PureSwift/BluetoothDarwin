@@ -28,6 +28,8 @@ final class BluetoothDarwinTests: XCTestCase {
             let localName = try controller.readLocalName()
             
             print("Local name: \(localName)")
+            
+            XCTAssert(localName.isEmpty == false, "Should not have empty name")
         }
         
         catch { XCTFail("Error: \(error)") }
