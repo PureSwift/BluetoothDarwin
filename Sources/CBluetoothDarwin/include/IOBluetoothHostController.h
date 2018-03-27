@@ -282,6 +282,27 @@ struct IOBluetoothHCIDispatchParams {
     uint64_t index;
 };
 
+
+struct BluetoothHCIUserClientNotificationDataInfo {
+    unsigned long long _field1;
+    unsigned long long _field2;
+    struct BluetoothHCIRequestCallbackInfo _field3;
+    unsigned int parameterSize;
+    unsigned int _field5;
+    unsigned short opcode;
+    unsigned char _field7;
+    unsigned char _field8;
+    unsigned char _field9;
+    unsigned char _field10;
+    unsigned char _field11;
+    unsigned char _field12;
+};
+
+struct IOBluetoothHCIEventNotificationMessage {
+    struct BluetoothHCIUserClientNotificationDataInfo dataInfo;
+    void *_field2;
+};
+
 int BluetoothHCIRequestCreate(uint32_t *request, int timeout, void* arg3, size_t arg4);
 
 int BluetoothHCIRequestDelete(uint32_t request);

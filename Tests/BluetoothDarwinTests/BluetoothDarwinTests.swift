@@ -30,6 +30,8 @@ final class BluetoothDarwinTests: XCTestCase {
             print("Local name: \(localName)")
             
             XCTAssert(localName.isEmpty == false, "Should not have empty name")
+            
+            XCTAssert(localName == IOBluetoothHostController.default().nameAsString())
         }
         
         catch { XCTFail("Error: \(error)") }

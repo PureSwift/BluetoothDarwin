@@ -11,7 +11,8 @@ import IOBluetooth
 import CBluetoothDarwin
 import Bluetooth
 
-public final class HostController: BluetoothHostControllerInterface {
+@objc(BluetoothHostController)
+public final class HostController: NSObject, BluetoothHostControllerInterface {
     
     // MARK: - Properties
     
@@ -30,6 +31,9 @@ public final class HostController: BluetoothHostControllerInterface {
         
         self.controller = controller
         self.address = address
+        
+        super.init()
+        self.controller.delegate = self
     }
     
     public static var controllers: [HostController] {
@@ -111,6 +115,39 @@ public final class HostController: BluetoothHostControllerInterface {
         
         return response
     }
+    
+    public func pollEvent<T: HCIEventParameter >(_ eventParameterType: T.Type,
+                                                 shouldContinue: () -> (Bool),
+                                                 event: (T) throws -> ()) throws {
+        
+        fatalError("Not implemented")
+    }
+    
+    @objc(controllerHCIEvent:message:)
+    func controllerHCIEvent(_ controller: IOBluetoothHostController, message: CUnsignedInt) {
+        
+        print(#function, message)
+    }
+    
+    @objc(controllerNotification:message:)
+    func controllerNotification(_ controller: IOBluetoothHostController, message: CUnsignedInt) {
+        
+        print(#function, message)
+    }
+    
+    @objc(BluetoothHCIEventNotificationMessage:inNotificationMessage:)
+    func bluetoothHCIEventNotificationMessage(_ controller: IOBluetoothHostController,
+                                              in message: UnsafePointer<IOBluetoothHCIEventNotificationMessage>) {
+        
+        print(#function, message)
+    }
+}
+
+// MARK: - Errors
+
+public extension HostController {
+    
+    public typealias Error = BluetoothHostControllerError
 }
 
 public extension HostController {
@@ -127,4 +164,3 @@ public extension HostController {
         }
     }
 }
-
