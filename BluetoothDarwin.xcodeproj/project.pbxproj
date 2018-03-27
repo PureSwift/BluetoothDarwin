@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6E0245B1206806A6007FB15E /* BluetoothDarwin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0245AF2068069F007FB15E /* BluetoothDarwin.swift */; };
-		6E0245D42068320A007FB15E /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 6E0245D32068320A007FB15E /* Cartfile */; };
 		6E0245D6206837DC007FB15E /* HostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0245D5206837DC007FB15E /* HostController.swift */; };
 		8933C78F1EB5B82C000D00A4 /* BluetoothDarwinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7891EB5B82A000D00A4 /* BluetoothDarwinTests.swift */; };
 		DD7502881C68FEDE006590AF /* BluetoothDarwin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D6DA0F1BF000BD002C0205 /* BluetoothDarwin.framework */; };
@@ -242,7 +241,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E0245D42068320A007FB15E /* Cartfile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

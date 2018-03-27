@@ -33,7 +33,7 @@ internal func HCISendRequest <Command: HCICommand> (command: Command,
     error = BluetoothHCISendRawCommand(request: request, commandData: commandRawData, returnParameter: &returnParameterData)
     
     guard error == 0
-        else { throw HostController.DarwinError(errorCode: error) }
+        else { throw HostController.DarwinError.hciError(error) }
     
     if timeout > 0 {
         
