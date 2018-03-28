@@ -300,7 +300,7 @@ struct BluetoothHCIUserClientNotificationDataInfo {
 
 struct IOBluetoothHCIEventNotificationMessage {
     struct BluetoothHCIUserClientNotificationDataInfo dataInfo;
-    void *_field2;
+    void *eventParameterData;
 };
 
 int BluetoothHCIRequestCreate(uint32_t *request, int timeout, void* arg3, size_t arg4);

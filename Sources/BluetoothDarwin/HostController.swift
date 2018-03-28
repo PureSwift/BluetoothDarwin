@@ -20,6 +20,8 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
     
     public let address: Bluetooth.Address
     
+    internal var hciEvent: (([UInt8]) -> ())?
+    
     // MARK: - Initialization
     
     private init(_ controller: IOBluetoothHostController) {
@@ -120,7 +122,23 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
                                                  shouldContinue: () -> (Bool),
                                                  event: (T) throws -> ()) throws {
         
-        fatalError("Not implemented")
+        var error: Error?
+        
+        self.hciEvent = { (eventMessage) in
+            
+            
+        }
+        
+        while error == nil, shouldContinue() {
+            
+            usleep(100)
+        }
+        
+        self.hciEvent = nil
+        
+        if let error = error {
+            throw error
+        }
     }
     
     @objc(controllerHCIEvent:message:)
@@ -140,6 +158,12 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
                                               in message: UnsafePointer<IOBluetoothHCIEventNotificationMessage>) {
         
         print(#function, message)
+        
+        let opcode = message.pointee.dataInfo.opcode
+        let parameterLength = message.pointee.dataInfo.parameterSize
+        let parameterPointer = message.pointee.eventParameterData
+        
+        
     }
 }
 
