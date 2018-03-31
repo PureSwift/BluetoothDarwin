@@ -15,7 +15,7 @@ import Bluetooth
 internal func HCISendRequest <Command: HCICommand> (command: Command,
                                                     commandParameterData: [UInt8],
                                                     returnParameterData: inout [UInt8],
-                                                    timeout: Int) throws {
+                                                    timeout: HCICommandTimeout = .default) throws {
     
     let commandHeader = HCICommandHeader(command: command, parameterLength: UInt8(commandParameterData.count))
     let commandRawData = commandHeader.byteValue + commandParameterData
@@ -23,7 +23,7 @@ internal func HCISendRequest <Command: HCICommand> (command: Command,
     var request: BluetoothHCIRequestID = 0
     var error: CInt = 0
     
-    error = BluetoothHCIRequestCreate(&request, CInt(timeout), nil, 0)
+    error = BluetoothHCIRequestCreate(&request, CInt(timeout.rawValue), nil, 0)
     
     guard error == 0
         else { throw HostController.DarwinError(errorCode: error) }
@@ -34,11 +34,6 @@ internal func HCISendRequest <Command: HCICommand> (command: Command,
     
     guard error == 0
         else { throw HostController.DarwinError.hciError(error) }
-    
-    if timeout > 0 {
-        
-        usleep(useconds_t(timeout))
-    }
     
     BluetoothHCIRequestDelete(request)
 }

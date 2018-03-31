@@ -76,7 +76,7 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
                            timeout: 0)
     }
     
-    public func deviceRequest<C: HCICommand>(_ command: C, timeout: Int = HCI.defaultTimeout) throws {
+    public func deviceRequest<C: HCICommand>(_ command: C, timeout: HCICommandTimeout = .default) throws {
         
         let commandParameterData = [UInt8]()
         var returnParameterData = [UInt8]()
@@ -87,7 +87,7 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
                            timeout: timeout)
     }
     
-    public func deviceRequest<CP>(_ commandParameter: CP, timeout: Int = HCI.defaultTimeout) throws where CP : HCICommandParameter {
+    public func deviceRequest<CP>(_ commandParameter: CP, timeout: HCICommandTimeout = .default) throws where CP : HCICommandParameter {
             
         let commandParameterData = commandParameter.byteValue
         var returnParameterData = [UInt8]()
@@ -98,12 +98,12 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
                            timeout: timeout)
     }
     
-    public func deviceRequest<CP, EP>(_ commandParameter: CP, _ eventParameterType: EP.Type, timeout: Int = HCI.defaultTimeout) throws -> EP where CP : HCICommandParameter, EP : HCIEventParameter {
+    public func deviceRequest<CP, EP>(_ commandParameter: CP, _ eventParameterType: EP.Type, timeout: HCICommandTimeout = .default) throws -> EP where CP : HCICommandParameter, EP : HCIEventParameter {
         
         fatalError("not implemented")
     }
     
-    public func deviceRequest <Return: HCICommandReturnParameter> (_ commandReturnType: Return.Type, timeout: Int = HCI.defaultTimeout) throws -> Return {
+    public func deviceRequest <Return: HCICommandReturnParameter> (_ commandReturnType: Return.Type, timeout: HCICommandTimeout = .default) throws -> Return {
         
         let commandParameterData = [UInt8]()
         var returnParameterData = [UInt8](repeating: 0, count: commandReturnType.length)
@@ -119,7 +119,7 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
         return response
     }
     
-    public func deviceRequest<CP, Return>(_ commandParameter: CP, _ commandReturnType: Return.Type, timeout: Int) throws -> Return where CP : HCICommandParameter, Return : HCICommandReturnParameter {
+    public func deviceRequest<CP, Return>(_ commandParameter: CP, _ commandReturnType: Return.Type, timeout: HCICommandTimeout = .default) throws -> Return where CP : HCICommandParameter, Return : HCICommandReturnParameter {
         
         assert(CP.command.rawValue == Return.command.rawValue)
         
@@ -176,8 +176,8 @@ extension HostController: IOBluetoothHostControlllerDelegate {
     }
     
     @objc(BluetoothHCIEventNotificationMessage:inNotificationMessage:)
-    func bluetoothHCIEventNotificationMessage(_ controller: IOBluetoothHostController,
-                                              in message: UnsafePointer<IOBluetoothHCIEventNotificationMessage>) {
+    public func bluetoothHCIEventNotificationMessage(_ controller: IOBluetoothHostController,
+                                              in message: UnsafeMutablePointer<IOBluetoothHCIEventNotificationMessage>) {
         
         print(#function, message)
         
