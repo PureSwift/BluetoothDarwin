@@ -8,6 +8,7 @@
 
 import Foundation
 import IOBluetooth
+import Darwin
 import CBluetoothDarwin
 import Bluetooth
 
@@ -97,7 +98,7 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
                            timeout: timeout)
     }
     
-    public func deviceRequest<CP, EP>(commandParameter: CP, eventParameterType: EP.Type, timeout: Int = HCI.defaultTimeout) throws -> EP where CP : HCICommandParameter, EP : HCIEventParameter {
+    public func deviceRequest<CP, EP>(_ commandParameter: CP, _ eventParameterType: EP.Type, timeout: Int = HCI.defaultTimeout) throws -> EP where CP : HCICommandParameter, EP : HCIEventParameter {
         
         fatalError("not implemented")
     }
@@ -108,6 +109,24 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
         var returnParameterData = [UInt8](repeating: 0, count: commandReturnType.length)
         
         try HCISendRequest(command: Return.command,
+                           commandParameterData: commandParameterData,
+                           returnParameterData: &returnParameterData,
+                           timeout: timeout)
+        
+        guard let response = Return.init(byteValue: [UInt8](returnParameterData))
+            else { throw BluetoothHostControllerError.garbageResponse(Data(returnParameterData)) }
+        
+        return response
+    }
+    
+    public func deviceRequest<CP, Return>(_ commandParameter: CP, _ commandReturnType: Return.Type, timeout: Int) throws -> Return where CP : HCICommandParameter, Return : HCICommandReturnParameter {
+        
+        assert(CP.command.rawValue == Return.command.rawValue)
+        
+        let commandParameterData = commandParameter.byteValue
+        var returnParameterData = [UInt8](repeating: 0, count: commandReturnType.length)
+        
+        try HCISendRequest(command: CP.command,
                            commandParameterData: commandParameterData,
                            returnParameterData: &returnParameterData,
                            timeout: timeout)
@@ -140,6 +159,9 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
             throw error
         }
     }
+}
+
+extension HostController: IOBluetoothHostControlllerDelegate {
     
     @objc(controllerHCIEvent:message:)
     func controllerHCIEvent(_ controller: IOBluetoothHostController, message: CUnsignedInt) {
@@ -160,10 +182,13 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
         print(#function, message)
         
         let opcode = message.pointee.dataInfo.opcode
-        let parameterLength = message.pointee.dataInfo.parameterSize
+        let parameterLength = Int(message.pointee.dataInfo.parameterSize)
         let parameterPointer = message.pointee.eventParameterData
         
+        var data = [UInt8](repeating: 0, count: parameterLength)
+        memcpy(&data, parameterPointer, parameterLength)
         
+        data = [] + data
     }
 }
 

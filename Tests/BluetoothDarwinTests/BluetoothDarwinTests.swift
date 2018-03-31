@@ -15,10 +15,6 @@ import CBluetoothDarwin
 
 final class BluetoothDarwinTests: XCTestCase {
     
-    static var allTests = [
-        ("testReadName", testReadName),
-        ]
-    
     func testReadName() {
         
         guard let controller = HostController.default
@@ -51,7 +47,7 @@ final class BluetoothDarwinTests: XCTestCase {
         hciController.bluetoothHCILESetScanEnable(1, filterDuplicates: 1)
         defer { hciController.bluetoothHCILESetScanEnable(0, filterDuplicates: 0) }
         
-        class HCIDelegate: NSObject {
+        class HCIDelegate: IOBluetoothHostControlllerDelegate {
             
             @objc(BluetoothHCIEventNotificationMessage:inNotificationMessage:)
             func bluetoothHCIEventNotificationMessage(_ controller: IOBluetoothHostController,
@@ -64,7 +60,7 @@ final class BluetoothDarwinTests: XCTestCase {
         let hciDelegate = HCIDelegate()
         hciController.delegate = hciDelegate
         
-        sleep(10)
+        //sleep(10)
         
         
     }

@@ -117,8 +117,8 @@
 		6E0245AE2068069F007FB15E /* BluetoothDarwin */ = {
 			isa = PBXGroup;
 			children = (
-				6E0245AF2068069F007FB15E /* BluetoothDarwin.swift */,
 				6E0245D5206837DC007FB15E /* HostController.swift */,
+				6E0245AF2068069F007FB15E /* BluetoothDarwin.swift */,
 			);
 			path = BluetoothDarwin;
 			sourceTree = "<group>";

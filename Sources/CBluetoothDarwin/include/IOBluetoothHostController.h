@@ -7,6 +7,14 @@
 @import Foundation;
 @import IOBluetooth;
 
+@protocol IOBluetoothHostControlllerDelegate
+
+@optional
+- (void)BluetoothHCIEventNotificationMessage:(IOBluetoothHostController*)controller
+                       inNotificationMessage:(struct IOBluetoothHCIEventNotificationMessage *)message;
+
+@end
+
 @interface IOBluetoothHostController (PrivateAPI)
 
 + (void)initialize;
@@ -14,7 +22,7 @@
 + (instancetype)defaultController;
 + (NSArray <IOBluetoothHostController *> *)controllers;
 + (void)enableNotifications;
-@property id delegate; // @synthesize delegate=_delegate;
+//@property (weak) id <IOBluetoothHostControlllerDelegate> delegate;
 - (void)BluetoothHostControllerSetupCompleted;
 - (void)sendInquiryResultToDelegate:(struct IOBluetoothHCIEventNotificationMessage *)arg1;
 - (void)processRawEventData:(const void *)arg1 dataSize:(unsigned long long)arg2;
