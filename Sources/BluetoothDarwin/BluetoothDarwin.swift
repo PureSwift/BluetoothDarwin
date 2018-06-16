@@ -13,12 +13,12 @@ import Bluetooth
 
 /// Returns event parameter data.
 internal func HCISendRequest <Command: HCICommand> (command: Command,
-                                                    commandParameterData: [UInt8],
-                                                    returnParameterData: inout [UInt8],
+                                                    commandParameterData: Data,
+                                                    returnParameterData: inout Data,
                                                     timeout: HCICommandTimeout = .default) throws {
     
     let commandHeader = HCICommandHeader(command: command, parameterLength: UInt8(commandParameterData.count))
-    let commandRawData = commandHeader.byteValue + commandParameterData
+    let commandRawData = commandHeader.data + commandParameterData
     
     var request: BluetoothHCIRequestID = 0
     var error: CInt = 0
@@ -40,8 +40,8 @@ internal func HCISendRequest <Command: HCICommand> (command: Command,
 
 /// IOBluetoothHostController::SendRawHCICommand(unsigned int, char*, unsigned int, unsigned char*, unsigned int)
 internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
-                                       commandData: [UInt8],
-                                       returnParameter outputData: inout [UInt8]) -> CInt {
+                                         commandData: Data,
+                                         returnParameter outputData: inout Data) -> CInt {
     
     assert(commandData.isEmpty == false)
     assert(request != 0)
@@ -56,11 +56,11 @@ internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
     withUnsafePointer(to: &request, {
         dispatchParameters.args.0 = UInt64(uintptr_t(bitPattern: $0))
     })
-    commandData.withUnsafeBufferPointer {
-        if let address = $0.baseAddress {
-            dispatchParameters.args.1 = UInt64(uintptr_t(bitPattern: address))
-        }
+    
+    commandData.withUnsafeBytes {
+        dispatchParameters.args.1 = UInt64(uintptr_t(bitPattern: $0))
     }
+    
     withUnsafePointer(to: &commandSize, {
         dispatchParameters.args.2 = UInt64(uintptr_t(bitPattern: $0))
     })
@@ -70,5 +70,5 @@ internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
     dispatchParameters.sizes.2 = UInt64(MemoryLayout<uintptr_t>.size) // sizeof(uintptr_t);
     dispatchParameters.index = 0x000060c000000062 // Method ID
     
-    return BluetoothHCIDispatchUserClientRoutine(&dispatchParameters, &outputData, &returnParameterSize)
+    return outputData.withUnsafeMutableBytes { BluetoothHCIDispatchUserClientRoutine(&dispatchParameters, $0, &returnParameterSize) }
 }
