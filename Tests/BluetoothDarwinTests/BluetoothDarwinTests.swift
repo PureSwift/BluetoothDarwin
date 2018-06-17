@@ -10,8 +10,8 @@ import Foundation
 import XCTest
 import IOBluetooth
 import Bluetooth
-import BluetoothDarwin
 import CBluetoothDarwin
+@testable import BluetoothDarwin
 
 final class BluetoothDarwinTests: XCTestCase {
     
@@ -36,16 +36,13 @@ final class BluetoothDarwinTests: XCTestCase {
     
     func testLEScan() {
         
-        guard let hciController = IOBluetoothHostController.default()
-            else { return }
+        guard let controller = HostController.default
+            else { XCTFail("No Bluetooth hardware availible"); return }
+        
+        let hciController = controller.controller
         
         guard hciController.lowEnergySupported()
             else { return }
-        
-        hciController.bluetoothHCILESetScanEnable(0, filterDuplicates: 0)
-        hciController.bluetoothHCILESetScanParameters(0, leScanInterval: 0x01E0, leScanWindow: 0x0030, ownAddressType: 0, scanningFilterPolicy: 0)
-        hciController.bluetoothHCILESetScanEnable(1, filterDuplicates: 1)
-        defer { hciController.bluetoothHCILESetScanEnable(0, filterDuplicates: 0) }
         
         class HCIDelegate: IOBluetoothHostControlllerDelegate {
             
@@ -60,8 +57,6 @@ final class BluetoothDarwinTests: XCTestCase {
         let hciDelegate = HCIDelegate()
         hciController.delegate = hciDelegate
         
-        //sleep(10)
-        
-        
+        XCTAssertNoThrow(try controller.lowEnergyScan(duration: 10, filterDuplicates: true))
     }
 }
