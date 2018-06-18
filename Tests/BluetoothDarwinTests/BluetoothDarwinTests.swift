@@ -39,24 +39,6 @@ final class BluetoothDarwinTests: XCTestCase {
         guard let controller = HostController.default
             else { XCTFail("No Bluetooth hardware availible"); return }
         
-        let hciController = controller.controller
-        
-        guard hciController.lowEnergySupported()
-            else { return }
-        
-        class HCIDelegate: IOBluetoothHostControlllerDelegate {
-            
-            @objc(BluetoothHCIEventNotificationMessage:inNotificationMessage:)
-            func bluetoothHCIEventNotificationMessage(_ controller: IOBluetoothHostController,
-                                                      in message: UnsafePointer<IOBluetoothHCIEventNotificationMessage>) {
-                
-                print(#function, message)
-            }
-        }
-        
-        let hciDelegate = HCIDelegate()
-        hciController.delegate = hciDelegate
-        
         XCTAssertNoThrow(try controller.lowEnergyScan(duration: 10, filterDuplicates: true))
     }
 }

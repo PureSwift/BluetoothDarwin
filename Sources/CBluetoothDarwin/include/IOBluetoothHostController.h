@@ -7,11 +7,17 @@
 @import Foundation;
 @import IOBluetooth;
 
-@protocol IOBluetoothHostControlllerDelegate
+struct IOBluetoothHCIEventNotificationMessage;
+typedef struct IOBluetoothHCIEventNotificationMessage * IOBluetoothHCIEventNotificationMessageRef;
+
+NS_ASSUME_NONNULL_BEGIN
+
+@protocol IOBluetoothHostControllerDelegate
 
 @optional
-- (void)BluetoothHCIEventNotificationMessage:(IOBluetoothHostController*)controller
-                       inNotificationMessage:(struct IOBluetoothHCIEventNotificationMessage *)message;
+
+- (void)BluetoothHCIEventNotificationMessage:(IOBluetoothHostController *)controller
+                       inNotificationMessage:(IOBluetoothHCIEventNotificationMessageRef)message;
 
 @end
 
@@ -19,7 +25,6 @@
 
 + (void)initialize;
 + (id)getPropertyObjectFromIOServiceNamed:(const char *)arg1 forKey:(id)arg2;
-+ (instancetype)defaultController;
 + (NSArray <IOBluetoothHostController *> *)controllers;
 + (void)enableNotifications;
 //@property (weak) id <IOBluetoothHostControlllerDelegate> delegate;
@@ -290,7 +295,6 @@ struct IOBluetoothHCIDispatchParams {
     uint64_t index;
 };
 
-
 struct BluetoothHCIUserClientNotificationDataInfo {
     unsigned long long _field1;
     unsigned long long _field2;
@@ -308,19 +312,32 @@ struct BluetoothHCIUserClientNotificationDataInfo {
 
 struct IOBluetoothHCIEventNotificationMessage {
     struct BluetoothHCIUserClientNotificationDataInfo dataInfo;
-    void *eventParameterData;
+    void *eventParameterBytes;
 };
 
-int BluetoothHCIRequestCreate(uint32_t *request, int timeout, void* arg3, size_t arg4);
+int BluetoothHCIRequestCreate(uint32_t *request, int timeout, _Nullable void* arg3, size_t arg4);
 
 int BluetoothHCIRequestDelete(uint32_t request);
 
 int BluetoothHCISendRawCommand(uint32_t request,
-                                void *commandData,
+                               void *commandData,
                                size_t commmandSize);
 
 int BluetoothHCIDispatchUserClientRoutine(struct IOBluetoothHCIDispatchParams *arguments,
                                           unsigned char *returnValue,
                                           size_t *returnValueSize);
 
+#pragma mark - Helper Functions
 
+/**
+ Data object for notification message.
+ */
+static inline NSData * IOBluetoothHCIEventParameterData(IOBluetoothHCIEventNotificationMessageRef message)
+//__attribute__((swift_name("getter:IOBluetoothHCIEventNotificationMessageRef.eventParameterData(self:)")))
+{
+    size_t size = message->dataInfo.parameterSize;
+    NSData *data = [NSData dataWithBytes:&message->eventParameterBytes length:size];
+    return data;
+}
+
+NS_ASSUME_NONNULL_END

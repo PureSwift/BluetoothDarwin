@@ -166,7 +166,7 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
     }
 }
 
-extension HostController: IOBluetoothHostControlllerDelegate {
+extension HostController: IOBluetoothHostControllerDelegate {
     
     @objc(controllerHCIEvent:message:)
     func controllerHCIEvent(_ controller: IOBluetoothHostController, message: CUnsignedInt) {
@@ -182,18 +182,15 @@ extension HostController: IOBluetoothHostControlllerDelegate {
     
     @objc(BluetoothHCIEventNotificationMessage:inNotificationMessage:)
     public func bluetoothHCIEventNotificationMessage(_ controller: IOBluetoothHostController,
-                                              in message: UnsafeMutablePointer<IOBluetoothHCIEventNotificationMessage>) {
+                                                     in message: IOBluetoothHCIEventNotificationMessageRef) {
         
-        print(#function, message)
+        print(#function)
         
         let opcode = message.pointee.dataInfo.opcode
-        let parameterLength = Int(message.pointee.dataInfo.parameterSize)
-        let parameterPointer = message.pointee.eventParameterData
         
-        var data = [UInt8](repeating: 0, count: parameterLength)
-        memcpy(&data, parameterPointer, parameterLength)
+        let data = IOBluetoothHCIEventParameterData(message)
         
-        data = [] + data
+        print("HCI Event \(opcode):", data)
     }
 }
 
