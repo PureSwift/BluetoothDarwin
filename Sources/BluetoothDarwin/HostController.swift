@@ -27,7 +27,7 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
     
     private init(_ controller: IOBluetoothHostController) {
         
-         let addressString = controller.addressAsString().uppercased()
+        let addressString = controller.addressAsString().uppercased().replacingOccurrences(of: "-", with: ":")
         
         guard let address = Address(rawValue: addressString)
             else { fatalError("Invalid Bluetooth Address \(addressString)") }
