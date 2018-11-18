@@ -29,8 +29,8 @@
 		6E0245AC2068069F007FB15E /* IOBluetoothHostController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOBluetoothHostController.h; sourceTree = "<group>"; };
 		6E0245AD2068069F007FB15E /* dummy.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dummy.c; sourceTree = "<group>"; };
 		6E0245AF2068069F007FB15E /* BluetoothDarwin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDarwin.swift; sourceTree = "<group>"; };
-		6E0245D220683201007FB15E /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		6E0245D32068320A007FB15E /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		6E0245D220683201007FB15E /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
+		6E0245D32068320A007FB15E /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Cartfile; path = ../Cartfile; sourceTree = "<group>"; };
 		6E0245D5206837DC007FB15E /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
 		8933C7891EB5B82A000D00A4 /* BluetoothDarwinTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothDarwinTests.swift; sourceTree = "<group>"; };
 		AD2FAA261CD0B6D800659CF4 /* BluetoothDarwin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BluetoothDarwin.plist; sourceTree = "<group>"; };
@@ -93,7 +93,8 @@
 				6E0245A92068069F007FB15E /* CBluetoothDarwin */,
 				6E0245AE2068069F007FB15E /* BluetoothDarwin */,
 			);
-			path = Sources;
+			name = Sources;
+			path = ../Sources;
 			sourceTree = "<group>";
 		};
 		6E0245A92068069F007FB15E /* CBluetoothDarwin */ = {
@@ -129,7 +130,7 @@
 				8933C7891EB5B82A000D00A4 /* BluetoothDarwinTests.swift */,
 			);
 			name = Tests;
-			path = Tests/BluetoothDarwinTests;
+			path = ../Tests/BluetoothDarwinTests;
 			sourceTree = "<group>";
 		};
 		DD7502721C68FC1B006590AF /* Frameworks */ = {
@@ -315,7 +316,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = $SRCROOT/Carthage/Build/Mac;
+				FRAMEWORK_SEARCH_PATHS = $SRCROOT/../Carthage/Build/Mac;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -376,7 +377,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = $SRCROOT/Carthage/Build/Mac;
+				FRAMEWORK_SEARCH_PATHS = $SRCROOT/../Carthage/Build/Mac;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -406,12 +407,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = $SRCROOT/Carthage/Build/Mac;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = Configs/BluetoothDarwin.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode -Xcc -fmodule-map-file=$(SRCROOT)/../Sources/CBluetoothDarwin/include/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pureswift.BluetoothDarwin;
 				PRODUCT_NAME = BluetoothDarwin;
 				SDKROOT = macosx;
@@ -428,12 +429,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = $SRCROOT/Carthage/Build/Mac;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = Configs/BluetoothDarwin.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode -Xcc -fmodule-map-file=$(SRCROOT)/../Sources/CBluetoothDarwin/include/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pureswift.BluetoothDarwin;
 				PRODUCT_NAME = BluetoothDarwin;
 				SDKROOT = macosx;
