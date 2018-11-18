@@ -1,25 +1,19 @@
-// swift-tools-version:3.0
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
+// swift-tools-version:4.1
 import PackageDescription
 
-let package = Package(
-    name: "BluetoothDarwin",
-    targets: [
-        Target(
-            name: "BluetoothDarwin",
+_ = Package(name: "BluetoothDarwin",
+            products: [
+                .library(
+                    name: "BluetoothDarwin",
+                    targets: ["BluetoothDarwin"]
+                )
+            ],
             dependencies: [
-                .Target(name: "CBluetoothDarwin")
-            ]),
-        Target(
-            name: "CBluetoothDarwin"),
-        Target(
-            name: "BluetoothDarwinTests",
-            dependencies: [
-                .Target(name: "BluetoothDarwin")
-            ])
-    ],
-    dependencies: [
-        .Package(url: "https://github.com/PureSwift/Bluetooth.git", majorVersion: 2)
-    ]
-)
+                .package(url: "https://github.com/PureSwift/Bluetooth.git", .branch("master"))
+            ],
+            targets: [
+                .target(name: "BluetoothDarwin", dependencies: ["Bluetooth", "CBluetoothDarwin"]),
+                .target(name: "CBluetoothDarwin"),
+                .testTarget(name: "BluetoothDarwinTests", dependencies: ["BluetoothDarwin"])
+            ],
+            swiftLanguageVersions: [4])

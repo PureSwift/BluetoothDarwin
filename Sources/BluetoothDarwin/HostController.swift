@@ -19,7 +19,7 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
     
     internal let controller: IOBluetoothHostController
     
-    public let address: Bluetooth.Address
+    public let address: BluetoothAddress
     
     internal var hciEvent: (([UInt8]) -> ())?
     
@@ -29,7 +29,7 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
         
         let addressString = controller.addressAsString().uppercased().replacingOccurrences(of: "-", with: ":")
         
-        guard let address = Address(rawValue: addressString)
+        guard let address = BluetoothAddress(rawValue: addressString)
             else { fatalError("Invalid Bluetooth Address \(addressString)") }
         
         self.controller = controller
@@ -150,12 +150,12 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
         
         self.hciEvent = { (eventMessage) in
             
-            
+            error = nil
         }
         
         while error == nil, shouldContinue() {
             
-            usleep(100)
+            sleep(1)
         }
         
         self.hciEvent = nil
@@ -171,26 +171,26 @@ extension HostController: IOBluetoothHostControllerDelegate {
     @objc(controllerHCIEvent:message:)
     func controllerHCIEvent(_ controller: IOBluetoothHostController, message: CUnsignedInt) {
         
-        print(#function, message)
+        //print(#function, message)
     }
     
     @objc(controllerNotification:message:)
     func controllerNotification(_ controller: IOBluetoothHostController, message: CUnsignedInt) {
         
-        print(#function, message)
+        //print(#function, message)
     }
     
     @objc(BluetoothHCIEventNotificationMessage:inNotificationMessage:)
     public func bluetoothHCIEventNotificationMessage(_ controller: IOBluetoothHostController,
                                                      in message: IOBluetoothHCIEventNotificationMessageRef) {
         
-        print(#function)
+        //print(#function)
         
-        let opcode = message.pointee.dataInfo.opcode
+        //let opcode = message.pointee.dataInfo.opcode
         
-        let data = IOBluetoothHCIEventParameterData(message)
+        //let data = IOBluetoothHCIEventParameterData(message)
         
-        print("HCI Event \(opcode):", data)
+        //print("HCI Event \(opcode):", data)
     }
 }
 
