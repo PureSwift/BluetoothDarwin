@@ -198,12 +198,12 @@ extension HostController: IOBluetoothHostControllerDelegate {
 
 public extension HostController {
     
-    public typealias Error = BluetoothHostControllerError
+    typealias Error = BluetoothHostControllerError
 }
 
 public extension HostController {
     
-    public struct DarwinError: Swift.Error {
+    struct DarwinError: Swift.Error {
         
         public let errorCode: CInt
         

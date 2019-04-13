@@ -58,7 +58,11 @@ internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
     })
     
     commandData.withUnsafeBytes {
+        #if swift(>=5.0)
+        dispatchParameters.args.1 = UInt64(unsafeBitCast($0, to: uintptr_t.self))
+        #else
         dispatchParameters.args.1 = UInt64(uintptr_t(bitPattern: $0))
+        #endif
     }
     
     withUnsafePointer(to: &commandSize, {
