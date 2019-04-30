@@ -47,7 +47,7 @@ internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
     assert(request != 0)
     
     var request = request
-    let commandData = commandData
+    let commandData = commandData as NSData
     var commandSize = commandData.count
     var returnParameterSize = outputData.count
     
@@ -57,13 +57,7 @@ internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
         dispatchParameters.args.0 = UInt64(uintptr_t(bitPattern: $0))
     })
     
-    commandData.withUnsafeBytes { (pointer: UnsafePointer<UInt8>) in
-        #if swift(>=5.0)
-        dispatchParameters.args.1 = UInt64(unsafeBitCast(pointer, to: uintptr_t.self))
-        #else
-        dispatchParameters.args.1 = UInt64(uintptr_t(bitPattern: pointer))
-        #endif
-    }
+    dispatchParameters.args.1 = UInt64(uintptr_t(bitPattern: commandData.bytes))
     
     withUnsafePointer(to: &commandSize, {
         dispatchParameters.args.2 = UInt64(uintptr_t(bitPattern: $0))
