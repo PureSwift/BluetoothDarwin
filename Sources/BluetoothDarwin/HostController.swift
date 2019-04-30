@@ -217,6 +217,7 @@ public extension HostController {
         internal static func hciError(_ errorCode: CInt) -> Swift.Error {
             
             if errorCode <= CInt(UInt8.max),
+                errorCode >= CInt(UInt8.min),
                 let hciError = HCIError(rawValue: UInt8(errorCode)) {
                 
                 return hciError
