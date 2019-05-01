@@ -26,14 +26,14 @@ internal func HCISendRequest <Command: HCICommand> (command: Command,
     error = BluetoothHCIRequestCreate(&request, CInt(timeout.rawValue), nil, 0)
     
     guard error == 0
-        else { throw HostController.DarwinError(errorCode: error) }
+        else { throw BluetoothDarwinError(errorCode: error) }
     
     assert(request != 0)
     
     error = BluetoothHCISendRawCommand(request: request, commandData: commandRawData, returnParameter: &returnParameterData)
     
     guard error == 0
-        else { throw HostController.DarwinError.hciError(error) }
+        else { throw BluetoothDarwinError.hciError(error) }
     
     BluetoothHCIRequestDelete(request)
 }
@@ -68,7 +68,17 @@ internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
     dispatchParameters.sizes.2 = UInt64(MemoryLayout<uintptr_t>.size) // sizeof(uintptr_t);
     dispatchParameters.index = 0x000060c000000062 // Method ID
     
+    #if swift(>=5.0)
+    return outputData.withUnsafeMutableBytes {
+        BluetoothHCIDispatchUserClientRoutine(
+            &dispatchParameters,
+            $0.baseAddress!.assumingMemoryBound(to: UInt8.self),
+            &returnParameterSize
+        )
+    }
+    #else
     return outputData.withUnsafeMutableBytes {
         BluetoothHCIDispatchUserClientRoutine(&dispatchParameters, $0, &returnParameterSize)
     }
+    #endif
 }
