@@ -68,3 +68,5 @@ fastlane/test_output
 
 # SPM Generated
 BluetoothDarwin.xcodeproj/*
+
+*.resolved
