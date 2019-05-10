@@ -48,7 +48,7 @@ internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
     
     var request = request
     let commandData = commandData as NSData
-    var commandSize = commandData.count
+    var commandSize = commandData.length
     var returnParameterSize = outputData.count
     
     var dispatchParameters = IOBluetoothHCIDispatchParams()
