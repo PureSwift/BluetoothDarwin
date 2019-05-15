@@ -23,14 +23,25 @@ final class BluetoothDarwinTests: XCTestCase {
         do {
             
             let localName = try controller.readLocalName()
-            
             print("Local name: \(localName)")
-            
             XCTAssert(localName.isEmpty == false, "Should not have empty name")
-            
             XCTAssert(localName == IOBluetoothHostController.default().nameAsString())
         }
+        catch { XCTFail("Error: \(error)") }
+    }
+    
+    func testReadDeviceAddress() {
         
+        guard let controller = HostController.default
+            else { XCTFail("No Bluetooth hardware availible"); return }
+        
+        do {
+            
+            let address = try controller.readDeviceAddress()
+            print("Address: \(address)")
+            XCTAssertNotEqual(address, .zero)
+            XCTAssertEqual(address.rawValue, IOBluetoothHostController.default()?.addressAsString()?.replacingOccurrences(of: "-", with: ":"))
+        }
         catch { XCTFail("Error: \(error)") }
     }
     

@@ -19,22 +19,13 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
     
     internal let controller: IOBluetoothHostController
     
-    public let address: BluetoothAddress
-    
     internal var hciEvent: (([UInt8]) -> ())?
     
     // MARK: - Initialization
     
     private init(_ controller: IOBluetoothHostController) {
         
-        let addressString = controller.addressAsString().uppercased().replacingOccurrences(of: "-", with: ":")
-        
-        guard let address = BluetoothAddress(rawValue: addressString)
-            else { fatalError("Invalid Bluetooth Address \(addressString)") }
-        
         self.controller = controller
-        self.address = address
-        
         super.init()
         self.controller.delegate = self
     }
