@@ -45,6 +45,9 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
     
     // MARK: - Methods
     
+    /// The current controller's power state.
+    ///
+    /// - Note: Only Apple Bluetooth adapters support power off.
     public var powerState: PowerState {
         guard let powerState = PowerState(rawValue: numericCast(controller.powerState.rawValue)) else {
             assertionFailure("Invalid power state \(controller.powerState.rawValue)")
@@ -53,6 +56,9 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
         return powerState
     }
     
+    /// The current controller's power state.
+    /// 
+    /// - Note: Only Apple Bluetooth adapters support power off.
     public func setPowerState(_ isOn: Bool) throws {
         
         let errorCode = controller.setPowerState(isOn ? 1 : 0)
