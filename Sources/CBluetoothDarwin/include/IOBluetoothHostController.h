@@ -327,6 +327,14 @@ int BluetoothHCIDispatchUserClientRoutine(struct IOBluetoothHCIDispatchParams *a
                                           unsigned char *returnValue,
                                           size_t *returnValueSize);
 
+int IOBluetoothPreferencesAvailable();
+
+int IOBluetoothPreferenceGetControllerPowerState();
+void IOBluetoothPreferenceSetControllerPowerState(int state);
+
+int IOBluetoothPreferenceGetDiscoverableState();
+void IOBluetoothPreferenceSetDiscoverableState(int state);
+
 #pragma mark - Helper Functions
 
 /**
