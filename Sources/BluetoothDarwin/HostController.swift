@@ -45,6 +45,21 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
     
     // MARK: - Methods
     
+    public var powerState: PowerState {
+        guard let powerState = PowerState(rawValue: numericCast(controller.powerState.rawValue)) else {
+            assertionFailure("Invalid power state \(controller.powerState.rawValue)")
+            return .unintialized
+        }
+        return powerState
+    }
+    
+    public func setPowerState(_ isOn: Bool) throws {
+        
+        let errorCode = controller.setPowerState(isOn ? 1 : 0)
+        guard errorCode == 0
+            else { throw BluetoothDarwinError.hciError(errorCode) }
+    }
+    
     public func deviceCommand<T>(_ command: T) throws where T : HCICommand {
     
         let commandParameterData = Data()
@@ -190,4 +205,14 @@ extension HostController: IOBluetoothHostControllerDelegate {
 public extension HostController {
     
     typealias Error = BluetoothHostControllerError
+}
+
+public extension HostController {
+    
+    enum PowerState: UInt8 {
+        
+        case off = 0x00
+        case on = 0x01
+        case unintialized = 0xFF
+    }
 }
