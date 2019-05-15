@@ -40,9 +40,19 @@ final class BluetoothDarwinTests: XCTestCase {
             let address = try controller.readDeviceAddress()
             print("Address: \(address)")
             XCTAssertNotEqual(address, .zero)
-            XCTAssertEqual(address.rawValue, IOBluetoothHostController.default()?.addressAsString()?.replacingOccurrences(of: "-", with: ":"))
+            XCTAssertEqual(address.rawValue, IOBluetoothHostController.default()?.addressAsString()?.replacingOccurrences(of: "-", with: ":").uppercased())
         }
         catch { XCTFail("Error: \(error)") }
+    }
+    
+    func testPowerState() {
+        
+        guard let controller = HostController.default
+            else { XCTFail("No Bluetooth hardware availible"); return }
+        
+        let powerState = controller.powerState
+        print("Power State: \(powerState)")
+        XCTAssertEqual(powerState, .on)
     }
     
     func testLEScan() {
@@ -50,6 +60,6 @@ final class BluetoothDarwinTests: XCTestCase {
         guard let controller = HostController.default
             else { XCTFail("No Bluetooth hardware availible"); return }
         
-        XCTAssertNoThrow(try controller.lowEnergyScan(duration: 10, filterDuplicates: true))
+        XCTAssertNoThrow(try controller.lowEnergyScan(duration: 1, filterDuplicates: true))
     }
 }
