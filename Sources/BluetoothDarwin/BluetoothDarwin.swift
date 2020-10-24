@@ -9,7 +9,7 @@
 import Foundation
 import IOBluetooth
 import CBluetoothDarwin
-import Bluetooth
+import BluetoothHCI
 
 /// Returns event parameter data.
 internal func HCISendRequest <Command: HCICommand> (command: Command,

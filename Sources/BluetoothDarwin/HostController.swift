@@ -10,7 +10,7 @@ import Foundation
 import IOBluetooth
 import Darwin
 import CBluetoothDarwin
-import Bluetooth
+import BluetoothHCI
 
 @objc(BluetoothHostController)
 public final class HostController: NSObject, BluetoothHostControllerInterface {

@@ -12,12 +12,26 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/PureSwift/Bluetooth.git",
-            .upToNextMinor(from: "4.2.0")
+            .branch("master")
         )
     ],
     targets: [
-        .target(name: "BluetoothDarwin", dependencies: ["Bluetooth", "CBluetoothDarwin"]),
-        .target(name: "CBluetoothDarwin"),
-        .testTarget(name: "BluetoothDarwinTests", dependencies: ["BluetoothDarwin"])
+        .target(
+            name: "BluetoothDarwin",
+            dependencies: [
+                "Bluetooth",
+                "BluetoothHCI",
+                "CBluetoothDarwin"
+            ]
+        ),
+        .target(
+            name: "CBluetoothDarwin"
+        ),
+        .testTarget(
+            name: "BluetoothDarwinTests",
+            dependencies: [
+                "BluetoothDarwin"
+            ]
+        )
     ]
 )
