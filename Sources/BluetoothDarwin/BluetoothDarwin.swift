@@ -68,7 +68,6 @@ internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
     dispatchParameters.sizes.2 = UInt64(MemoryLayout<uintptr_t>.size) // sizeof(uintptr_t);
     dispatchParameters.index = 0x000060c000000062 // Method ID
     
-    #if swift(>=5.0)
     return outputData.withUnsafeMutableBytes {
         BluetoothHCIDispatchUserClientRoutine(
             &dispatchParameters,
@@ -76,9 +75,4 @@ internal func BluetoothHCISendRawCommand(request: BluetoothHCIRequestID,
             &returnParameterSize
         )
     }
-    #else
-    return outputData.withUnsafeMutableBytes {
-        BluetoothHCIDispatchUserClientRoutine(&dispatchParameters, $0, &returnParameterSize)
-    }
-    #endif
 }
