@@ -1,0 +1,56 @@
+name: swift
+
+on: [push, pull_request]
+
+jobs:
+
+    macOS-swift-52:
+        name: macOS (Swift 5.2)
+        runs-on: macOS-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v1
+        - name: Make Logs Directory
+          run: mkdir logs
+        - name: Xcode Version
+          run: |
+            sudo xcode-select -s /Applications/Xcode_11.4.app
+            xcodebuild -version
+            swift --version
+        - name: Swift Version
+          run: swift --version
+
+
+    xcode-swift-52:
+        name: Xcode (Swift 5.2)
+        runs-on: macOS-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v1
+        - name: Make Logs Directory
+          run: mkdir logs
+        - name: Xcode Version
+          run: |
+            sudo xcode-select -s /Applications/Xcode_11.4.app
+            xcodebuild -version
+            swift --version
+        - name: XC Pretty
+          run: sudo gem install xcpretty-travis-formatter
+        - name: Detect Workspace & Scheme (macOS)
+          run: |
+            WORKSPACE="BluetoothDarwin.xcworkspace"
+            if [[ ! -e "$WORKSPACE" ]]
+            then
+            WORKSPACE="."
+            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep BluetoothDarwin-Package || true))
+            if [[ $GOTPACKAGE != "" ]]
+            then
+            SCHEME="BluetoothDarwin-Package"
+            else
+            SCHEME="BluetoothDarwin"
+            fi
+            else
+            SCHEME="BluetoothDarwin-macOS"
+            fi
+            echo "set -o pipefail; export PATH='swift-latest:$PATH'; WORKSPACE='$WORKSPACE'; SCHEME='$SCHEME'" > setup.sh
+
