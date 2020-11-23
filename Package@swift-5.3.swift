@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 import PackageDescription
 
 let package = Package(
@@ -19,7 +19,14 @@ let package = Package(
         .target(
             name: "BluetoothDarwin",
             dependencies: [
-                "Bluetooth",
+                .product(
+                    name: "Bluetooth",
+                    package: "Bluetooth"
+                ),
+                .product(
+                    name: "BluetoothHCI",
+                    package: "Bluetooth"
+                ),
                 "CBluetoothDarwin"
             ]
         ),
