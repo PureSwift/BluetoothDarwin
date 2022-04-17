@@ -1,8 +1,14 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.5
 import PackageDescription
 
 let package = Package(
     name: "BluetoothDarwin",
+    platforms: [
+        .macOS(.v10_15),
+        .iOS(.v13),
+        .watchOS(.v6),
+        .tvOS(.v13),
+    ],
     products: [
         .library(
             name: "BluetoothDarwin",
@@ -12,14 +18,21 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/PureSwift/Bluetooth.git",
-            .branch("master")
+            .branch("feature/async")
         )
     ],
     targets: [
         .target(
             name: "BluetoothDarwin",
             dependencies: [
-                "Bluetooth",
+                .product(
+                    name: "Bluetooth",
+                    package: "Bluetooth"
+                ),
+                .product(
+                    name: "BluetoothHCI",
+                    package: "Bluetooth"
+                ),
                 "CBluetoothDarwin"
             ]
         ),

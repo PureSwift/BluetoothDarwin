@@ -154,27 +154,11 @@ public final class HostController: NSObject, BluetoothHostControllerInterface {
         fatalError("Not implemented")
     }
     
-    public func pollEvent<T: HCIEventParameter >(_ eventParameterType: T.Type,
-                                                 shouldContinue: () -> (Bool),
-                                                 event: (T) throws -> ()) throws {
+    public func recieve<Event>(
+        _ eventType: Event.Type
+    ) throws -> Event where Event : HCIEventParameter, Event.HCIEventType == HCIGeneralEvent {
         
-        var error: Error?
-        
-        self.hciEvent = { (eventMessage) in
-            
-            error = nil
-        }
-        
-        while error == nil, shouldContinue() {
-            
-            sleep(1)
-        }
-        
-        self.hciEvent = nil
-        
-        if let error = error {
-            throw error
-        }
+        fatalError("Not implemented")
     }
 }
 

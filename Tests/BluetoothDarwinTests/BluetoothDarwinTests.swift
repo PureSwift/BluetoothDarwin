@@ -15,14 +15,14 @@ import CBluetoothDarwin
 
 final class BluetoothDarwinTests: XCTestCase {
     
-    func testReadName() {
+    func testReadName() async {
         
         guard let controller = HostController.default
             else { XCTFail("No Bluetooth hardware availible"); return }
         
         do {
             
-            let localName = try controller.readLocalName()
+            let localName = try await controller.readLocalName()
             print("Local name: \(localName)")
             XCTAssert(localName.isEmpty == false, "Should not have empty name")
             XCTAssert(localName == IOBluetoothHostController.default().nameAsString())
@@ -30,14 +30,14 @@ final class BluetoothDarwinTests: XCTestCase {
         catch { XCTFail("Error: \(error)") }
     }
     
-    func testReadDeviceAddress() {
+    func testReadDeviceAddress() async {
         
         guard let controller = HostController.default
             else { XCTFail("No Bluetooth hardware availible"); return }
         
         do {
             
-            let address = try controller.readDeviceAddress()
+            let address = try await controller.readDeviceAddress()
             print("Address: \(address)")
             XCTAssertNotEqual(address, .zero)
             XCTAssertEqual(address.rawValue, IOBluetoothHostController.default()?.addressAsString()?.replacingOccurrences(of: "-", with: ":").uppercased())
@@ -45,7 +45,7 @@ final class BluetoothDarwinTests: XCTestCase {
         catch { XCTFail("Error: \(error)") }
     }
     
-    func testPowerState() {
+    func testPowerState() async {
         
         guard let controller = HostController.default
             else { XCTFail("No Bluetooth hardware availible"); return }
@@ -53,13 +53,5 @@ final class BluetoothDarwinTests: XCTestCase {
         let powerState = controller.powerState
         print("Power State: \(powerState)")
         XCTAssertEqual(powerState, .on)
-    }
-    
-    func testLEScan() {
-        
-        guard let controller = HostController.default
-            else { XCTFail("No Bluetooth hardware availible"); return }
-        
-        XCTAssertNoThrow(try controller.lowEnergyScan(duration: 1, filterDuplicates: true))
     }
 }
